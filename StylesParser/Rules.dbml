@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="rules" Class="RulesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ANDREW;Initial Catalog=rules;Integrated Security=True" SettingsObjectName="StylesParser.Properties.Settings" SettingsPropertyName="rulesConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.cssRules" Member="cssRules">
+    <Type Name="cssRule">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="FileName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="cssRule_selector" Member="selectors" ThisKey="Id" OtherKey="RuleId" Type="selector" />
+      <Association Name="cssRule_selectorsRank" Member="selectorsRanks" ThisKey="Id" OtherKey="RuleId" Type="selectorsRank" />
+    </Type>
+  </Table>
+  <Table Name="dbo.cssRulesViews" Member="cssRulesViews">
+    <Type Name="cssRulesView">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="FileId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="cssRulesView_selectorsRanksView" Member="selectorsRanksViews" ThisKey="Id" OtherKey="RuleId" Type="selectorsRanksView" />
+      <Association Name="cssRulesView_selectorsView" Member="selectorsViews" ThisKey="Id" OtherKey="RuleId" Type="selectorsView" />
+      <Association Name="view_cssRulesView" Member="view" ThisKey="FileId" OtherKey="Id" Type="view" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.selectors" Member="selectors">
+    <Type Name="selector">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RuleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="FileName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentSelectorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="cssRule_selector" Member="cssRule" ThisKey="RuleId" OtherKey="Id" Type="cssRule" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.selectorsRanks" Member="selectorsRanks">
+    <Type Name="selectorsRank">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RuleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="FileName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentSelectorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="cssRule_selectorsRank" Member="cssRule" ThisKey="RuleId" OtherKey="Id" Type="cssRule" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.selectorsRanksViews" Member="selectorsRanksViews">
+    <Type Name="selectorsRanksView">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RuleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="FileId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentSelectorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="cssRulesView_selectorsRanksView" Member="cssRulesView" ThisKey="RuleId" OtherKey="Id" Type="cssRulesView" IsForeignKey="true" />
+      <Association Name="view_selectorsRanksView" Member="view" ThisKey="FileId" OtherKey="Id" Type="view" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.selectorsViews" Member="selectorsViews">
+    <Type Name="selectorsView">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RuleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="FileId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentSelectorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="cssRulesView_selectorsView" Member="cssRulesView" ThisKey="RuleId" OtherKey="Id" Type="cssRulesView" IsForeignKey="true" />
+      <Association Name="view_selectorsView" Member="view" ThisKey="FileId" OtherKey="Id" Type="view" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.View_Selector" Member="View_Selectors">
+    <Type Name="View_Selector">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SelectorName" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ViewId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SelectorType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="view_View_Selector" Member="view" ThisKey="ViewId" OtherKey="Id" Type="view" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.views" Member="views">
+    <Type Name="view">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Path" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="view_cssRulesView" Member="cssRulesViews" ThisKey="Id" OtherKey="FileId" Type="cssRulesView" />
+      <Association Name="view_selectorsRanksView" Member="selectorsRanksViews" ThisKey="Id" OtherKey="FileId" Type="selectorsRanksView" />
+      <Association Name="view_selectorsView" Member="selectorsViews" ThisKey="Id" OtherKey="FileId" Type="selectorsView" />
+      <Association Name="view_View_Selector" Member="View_Selectors" ThisKey="Id" OtherKey="ViewId" Type="View_Selector" />
+    </Type>
+  </Table>
+</Database>

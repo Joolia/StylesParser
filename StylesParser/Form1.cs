@@ -12,6 +12,8 @@ namespace StylesParser
 {
     public partial class Form1 : Form
     {
+        private string[] viewsFiles;
+        private string[] cssFiles;
         public Form1()
         {
             InitializeComponent();
@@ -19,11 +21,26 @@ namespace StylesParser
 
         private void button1_Click(object sender, EventArgs e)
         {
-            OpenFileDialog viewsSelectDialog = new OpenFileDialog();
-            viewsSelectDialog.Filter = @"Views files (*.cshtml)|*.cshtml|All files (*.*)|*.*";
-            viewsSelectDialog.InitialDirectory = @"D:\ks\KarriereStart";
-            viewsSelectDialog.Multiselect = true;
+            OpenFileDialog viewsSelectDialog = new OpenFileDialog
+            {
+                Filter = @"Views files (*.cshtml)|*.cshtml|All files (*.*)|*.*",
+                InitialDirectory = @"D:\ks\KarriereStart",
+                Multiselect = true
+            };
             viewsSelectDialog.ShowDialog();
+            viewsFiles = viewsSelectDialog.FileNames;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog stylesSelectDialog = new OpenFileDialog
+            {
+                Filter = @"Minimized css files (*.min.css)|*.min.css|All files (*.*)|*.*",
+                InitialDirectory = @"D:\ks\KarriereStart",
+                Multiselect = true
+            };
+            stylesSelectDialog.ShowDialog();
+            cssFiles = stylesSelectDialog.FileNames;
         }
     }
 }
