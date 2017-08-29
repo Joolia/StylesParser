@@ -57,16 +57,18 @@ namespace StylesParser
         private void button3_Click(object sender, EventArgs e)
         {
             SelectorsComparer selectorsComparer = new SelectorsComparer(viewsFiles, cssFiles);
+
             var intersectionList = selectorsComparer.GetIntersection();
-            for (int i = 0; i < intersectionList.Count; i++)
+
+            foreach (Tuple<string, string> intersection in intersectionList)
             {
                 DataGridViewRow row = new DataGridViewRow();
                 DataGridViewCell cellName = new DataGridViewTextBoxCell();
-                cellName.Value = intersectionList[i].Item1;
+                cellName.Value = intersection.Item1;
                 row.Cells.Add(cellName);
 
                 DataGridViewCell cellUsage = new DataGridViewTextBoxCell();
-                cellUsage.Value = intersectionList[i].Item2;
+                cellUsage.Value = intersection.Item2;
                 row.Cells.Add(cellUsage);
 
                 dataGridView1.Rows.Add(row);
