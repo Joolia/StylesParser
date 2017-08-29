@@ -48,6 +48,9 @@ namespace StylesParser
     partial void Insertview(view instance);
     partial void Updateview(view instance);
     partial void Deleteview(view instance);
+    partial void InsertSelectorsUsage(SelectorsUsage instance);
+    partial void UpdateSelectorsUsage(SelectorsUsage instance);
+    partial void DeleteSelectorsUsage(SelectorsUsage instance);
     #endregion
 		
 		public RulesDataContext() : 
@@ -141,6 +144,14 @@ namespace StylesParser
 			get
 			{
 				return this.GetTable<view>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SelectorsUsage> SelectorsUsages
+		{
+			get
+			{
+				return this.GetTable<SelectorsUsage>();
 			}
 		}
 	}
@@ -1375,6 +1386,8 @@ namespace StylesParser
 		
 		private EntitySet<View_Selector> _View_Selectors;
 		
+		private EntitySet<SelectorsUsage> _SelectorsUsages;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1391,6 +1404,7 @@ namespace StylesParser
 			this._selectorsRanksViews = new EntitySet<selectorsRanksView>(new Action<selectorsRanksView>(this.attach_selectorsRanksViews), new Action<selectorsRanksView>(this.detach_selectorsRanksViews));
 			this._selectorsViews = new EntitySet<selectorsView>(new Action<selectorsView>(this.attach_selectorsViews), new Action<selectorsView>(this.detach_selectorsViews));
 			this._View_Selectors = new EntitySet<View_Selector>(new Action<View_Selector>(this.attach_View_Selectors), new Action<View_Selector>(this.detach_View_Selectors));
+			this._SelectorsUsages = new EntitySet<SelectorsUsage>(new Action<SelectorsUsage>(this.attach_SelectorsUsages), new Action<SelectorsUsage>(this.detach_SelectorsUsages));
 			OnCreated();
 		}
 		
@@ -1486,6 +1500,19 @@ namespace StylesParser
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="view_SelectorsUsage", Storage="_SelectorsUsages", ThisKey="Id", OtherKey="ViewId")]
+		public EntitySet<SelectorsUsage> SelectorsUsages
+		{
+			get
+			{
+				return this._SelectorsUsages;
+			}
+			set
+			{
+				this._SelectorsUsages.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1552,6 +1579,193 @@ namespace StylesParser
 		{
 			this.SendPropertyChanging();
 			entity.view = null;
+		}
+		
+		private void attach_SelectorsUsages(SelectorsUsage entity)
+		{
+			this.SendPropertyChanging();
+			entity.view = this;
+		}
+		
+		private void detach_SelectorsUsages(SelectorsUsage entity)
+		{
+			this.SendPropertyChanging();
+			entity.view = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SelectorsUsage")]
+	public partial class SelectorsUsage : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _SelectorId;
+		
+		private int _ViewId;
+		
+		private bool _SelectorUsage;
+		
+		private EntityRef<view> _view;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnSelectorIdChanging(int value);
+    partial void OnSelectorIdChanged();
+    partial void OnViewIdChanging(int value);
+    partial void OnViewIdChanged();
+    partial void OnSelectorUsageChanging(bool value);
+    partial void OnSelectorUsageChanged();
+    #endregion
+		
+		public SelectorsUsage()
+		{
+			this._view = default(EntityRef<view>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SelectorId", DbType="Int NOT NULL")]
+		public int SelectorId
+		{
+			get
+			{
+				return this._SelectorId;
+			}
+			set
+			{
+				if ((this._SelectorId != value))
+				{
+					this.OnSelectorIdChanging(value);
+					this.SendPropertyChanging();
+					this._SelectorId = value;
+					this.SendPropertyChanged("SelectorId");
+					this.OnSelectorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ViewId", DbType="Int NOT NULL")]
+		public int ViewId
+		{
+			get
+			{
+				return this._ViewId;
+			}
+			set
+			{
+				if ((this._ViewId != value))
+				{
+					if (this._view.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnViewIdChanging(value);
+					this.SendPropertyChanging();
+					this._ViewId = value;
+					this.SendPropertyChanged("ViewId");
+					this.OnViewIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SelectorUsage", DbType="Bit NOT NULL")]
+		public bool SelectorUsage
+		{
+			get
+			{
+				return this._SelectorUsage;
+			}
+			set
+			{
+				if ((this._SelectorUsage != value))
+				{
+					this.OnSelectorUsageChanging(value);
+					this.SendPropertyChanging();
+					this._SelectorUsage = value;
+					this.SendPropertyChanged("SelectorUsage");
+					this.OnSelectorUsageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="view_SelectorsUsage", Storage="_view", ThisKey="ViewId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public view view
+		{
+			get
+			{
+				return this._view.Entity;
+			}
+			set
+			{
+				view previousValue = this._view.Entity;
+				if (((previousValue != value) 
+							|| (this._view.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._view.Entity = null;
+						previousValue.SelectorsUsages.Remove(this);
+					}
+					this._view.Entity = value;
+					if ((value != null))
+					{
+						value.SelectorsUsages.Add(this);
+						this._ViewId = value.Id;
+					}
+					else
+					{
+						this._ViewId = default(int);
+					}
+					this.SendPropertyChanged("view");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

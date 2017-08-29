@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StylesParser
 {
-    public class Parser
+    public class SelectorsComparer
     {
         public string[] ViewsFiles;
         public string[] CssFiles;
         private readonly RulesDataContext db = new RulesDataContext();
 
-        public Parser()
+        public SelectorsComparer()
         {
-            
         }
-        public Parser(string[] views, string[] cssFiles)
+
+        public SelectorsComparer(string[] views, string[] cssFiles)
         {
             ViewsFiles = views;
             CssFiles = cssFiles;
@@ -48,20 +49,40 @@ namespace StylesParser
             List<selectorsRank> selsList = new List<selectorsRank>();
             foreach (var cssFile in CssFiles)
             {
-                selsList.AddRange(db.selectorsRanks.Where(x => x.FileName == cssFile));
+                selsList.AddRange(db.selectorsRanks.Where(x => x.FileName == Path.GetFileName(cssFile)));
             }
             return selsList;
         }
 
-        public List<string> GetIntersection()
+        public List<Tuple<string, string>> GetIntersection()
         {
             var classesList = GetViewsClasses();
-            var classesSelectorsList = GetSelectors().Where(x => x.ParentSelectorId==null && x.Rank == 0 && x.Name.StartsWith("."));
+            var classesSelectorsList =
+                GetSelectors().Where(x => x.ParentSelectorId == null && x.Rank == 0 && x.Name.StartsWith("."));
 
-            return
+            var selectorsNamesUsedInView =
                 classesList.Select(x => x.SelectorName)
                     .Intersect(classesSelectorsList.Select(x => x.Name.Replace(".", "")))
                     .ToList();
+
+            List<Tuple<string, string>> usageSelectorsList = new List<Tuple<string, string>>();
+
+            foreach (var sr in classesSelectorsList)
+            {
+                usageSelectorsList.Add(selectorsNamesUsedInView.Contains(sr.Name.Replace(".", ""))
+                    ? new Tuple<string, string>(sr.Name, "used")
+                    : new Tuple<string, string>(sr.Name, "NOT used"));
+            }
+
+            return usageSelectorsList;
+        }
+
+        public void SaveIntersectionResultToDB(List<selectorsRank> selsList)
+        {
+            foreach (var selector in selsList)
+            {
+                
+            }
         }
     }
 }

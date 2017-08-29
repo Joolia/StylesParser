@@ -37,6 +37,7 @@
       <Column Name="FileName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="ParentSelectorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="selectorsRank_SelectorsUsage" Member="SelectorsUsages" ThisKey="Id" OtherKey="SelectorId" Type="SelectorsUsage" />
       <Association Name="cssRule_selectorsRank" Member="cssRule" ThisKey="RuleId" OtherKey="Id" Type="cssRule" IsForeignKey="true" />
     </Type>
   </Table>
@@ -80,6 +81,17 @@
       <Association Name="view_selectorsRanksView" Member="selectorsRanksViews" ThisKey="Id" OtherKey="FileId" Type="selectorsRanksView" />
       <Association Name="view_selectorsView" Member="selectorsViews" ThisKey="Id" OtherKey="FileId" Type="selectorsView" />
       <Association Name="view_View_Selector" Member="View_Selectors" ThisKey="Id" OtherKey="ViewId" Type="View_Selector" />
+      <Association Name="view_SelectorsUsage" Member="SelectorsUsages" ThisKey="Id" OtherKey="ViewId" Type="SelectorsUsage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SelectorsUsage" Member="SelectorsUsages">
+    <Type Name="SelectorsUsage">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SelectorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ViewId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SelectorUsage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="selectorsRank_SelectorsUsage" Member="selectorsRank" ThisKey="SelectorId" OtherKey="Id" Type="selectorsRank" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="view_SelectorsUsage" Member="view" ThisKey="ViewId" OtherKey="Id" Type="view" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

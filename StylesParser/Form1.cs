@@ -14,6 +14,7 @@ namespace StylesParser
     {
         private string[] viewsFiles;
         private string[] cssFiles;
+
         public Form1()
         {
             InitializeComponent();
@@ -49,16 +50,33 @@ namespace StylesParser
 
             foreach (var cssFile in cssFiles)
             {
-                listBox1.Items.Add(cssFile);
+                listBox2.Items.Add(cssFile);
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Parser parser = new Parser(viewsFiles, cssFiles);
-            var intersectionList = parser.GetIntersection();
+            SelectorsComparer selectorsComparer = new SelectorsComparer(viewsFiles, cssFiles);
+            var intersectionList = selectorsComparer.GetIntersection();
+            for (int i = 0; i < intersectionList.Count; i++)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+                DataGridViewCell cellName = new DataGridViewTextBoxCell();
+                cellName.Value = intersectionList[i].Item1;
+                row.Cells.Add(cellName);
 
-            listBox3.Items.AddRange(intersectionList.ToArray());
+                DataGridViewCell cellUsage = new DataGridViewTextBoxCell();
+                cellUsage.Value = intersectionList[i].Item2;
+                row.Cells.Add(cellUsage);
+
+                dataGridView1.Rows.Add(row);
+            }
+          
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
